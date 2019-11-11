@@ -4,9 +4,7 @@ class Serie extends Model {
   static init (sequelize) {
     super.init({
       title: DataTypes.STRING,
-      duration: DataTypes.INTEGER,
-      photo: DataTypes.STRING,
-      year: DataTypes.INTEGER
+      photo: DataTypes.STRING
     }, {
       sequelize
     })
