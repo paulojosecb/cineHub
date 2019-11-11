@@ -24,6 +24,10 @@ module.exports = {
     const { id } = req.params
     const { title, photo, format, category } = req.body
 
+    if (!title || !photo || !format || !category) {
+      return res.json({ error: 'Bad formatted Request' })
+    }
+
     const user = await User.findByPk(id)
 
     if (!user) {
@@ -37,6 +41,10 @@ module.exports = {
   async update (req, res) {
     const { serie_id } = req.params
     const { title, photo, owner, format, category } = req.body
+
+    if (!title || !photo || !owner || !format || !category) {
+      return res.json({ error: 'Bad formatted Request' })
+    }
 
     try {
       if (!serie_id) {

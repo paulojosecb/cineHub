@@ -24,6 +24,10 @@ module.exports = {
     const { serie_id } = req.params
     const { title, duration } = req.body
 
+    if (!title || !duration) {
+      return res.json({ error: 'Bad formatted Request' })
+    }
+
     const serie = await Serie.findByPk(serie_id)
 
     if (!serie) {
@@ -37,6 +41,10 @@ module.exports = {
   async update (req, res) {
     const { episode_id } = req.params
     const { title, duration } = req.body
+
+    if (!title || !duration) {
+      return res.json({ error: 'Bad formatted Request' })
+    }
 
     try {
       if (!episode_id) {

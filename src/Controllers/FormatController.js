@@ -8,6 +8,11 @@ module.exports = {
 
   async create (req, res) {
     const { description } = req.body
+
+    if (!description) {
+      return res.json({ error: 'Bad formatted Request' })
+    }
+
     const format = await Format.create({ description })
     return res.json(format)
   },
@@ -15,6 +20,10 @@ module.exports = {
   async update (req, res) {
     const { id } = req.params
     const { description } = req.body
+
+    if (!description) {
+      return res.json({ error: 'Bad formatted Request' })
+    }
 
     try {
       if (!id) {
