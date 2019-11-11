@@ -10,5 +10,32 @@ module.exports = {
     const { description } = req.body
     const format = await Format.create({ description })
     return res.json(format)
+  },
+
+  async update (req, res) {
+    const { id } = req.params
+    const { description } = req.body
+
+    try {
+      if (!id) {
+        return res.json({ error: 'Bad Formatted request' })
+      } else {
+        const format = await Format.update({ description }, { returning: true, where: { id: id } })
+        return res.json(format)
+      }
+    } catch (error) {
+      return res.json({ error: error })
+    }
+  },
+
+  async delete (req, res) {
+    const { id } = req.params
+
+    try {
+      const format = await Format.destroy({ where: { id: id } })
+      return res.json(format)
+    } catch (error) {
+      return res.json(({ error: error }))
+    }
   }
 }

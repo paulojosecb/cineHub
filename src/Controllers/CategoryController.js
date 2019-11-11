@@ -10,5 +10,32 @@ module.exports = {
     const { description } = req.body
     const user = await Category.create({ description })
     return res.json(user)
+  },
+
+  async update (req, res) {
+    const { id } = req.params
+    const { description } = req.body
+
+    try {
+      if (!id) {
+        return res.json({ error: 'Bad Formatted request' })
+      } else {
+        const category = await Category.update({ description }, { returning: true, where: { id: id } })
+        return res.json(category)
+      }
+    } catch (error) {
+      return res.json({ error: error })
+    }
+  },
+
+  async delete (req, res) {
+    const { id } = req.params
+
+    try {
+      const category = await Category.destroy({ where: { id: id } })
+      return res.json(category)
+    } catch (error) {
+      return res.json(({ error: error }))
+    }
   }
 }

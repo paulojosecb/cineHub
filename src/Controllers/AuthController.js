@@ -13,6 +13,7 @@ module.exports = {
       const admin = await Admin.findOne({ where: { email: email } })
 
       if (admin && admin.password === password) {
+        admin.password = null
         return res.json({ user: admin, role: 'admin' })
       } else {
         const user = await User.findOne({ where: { email: email } })
