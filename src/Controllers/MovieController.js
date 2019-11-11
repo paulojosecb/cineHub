@@ -50,7 +50,7 @@ module.exports = {
       if (!movie_id) {
         return res.json({ error: 'Bad Formatted request' })
       } else {
-        const movie = await Movie.update({ title, duration, year, photo, id: owner, format_id: format, category_id: category }, { returning: true, where: { id: movie_id } })
+        const movie = await Movie.update({ title, duration, year, photo, id: owner, format_id: format, category_id: category }, { returning: false, where: { id: movie_id } })
         return res.json(movie)
       }
     } catch (error) {

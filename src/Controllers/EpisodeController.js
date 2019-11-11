@@ -50,7 +50,7 @@ module.exports = {
       if (!episode_id) {
         return res.json({ error: 'Bad Formatted request' })
       } else {
-        const episode = await Episode.update({ title, duration }, { returning: true, where: { id: episode_id } })
+        const episode = await Episode.update({ title, duration }, { returning: false, where: { id: episode_id } })
         return res.json(episode)
       }
     } catch (error) {

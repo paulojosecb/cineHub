@@ -29,7 +29,7 @@ module.exports = {
       if (!id) {
         return res.json({ error: 'Bad Formatted request' })
       } else {
-        const format = await Format.update({ description }, { returning: true, where: { id: id } })
+        const format = await Format.update({ description }, { returning: false, where: { id: id } })
         return res.json(format)
       }
     } catch (error) {
