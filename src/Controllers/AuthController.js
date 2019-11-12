@@ -19,6 +19,7 @@ module.exports = {
         const user = await User.findOne({ where: { email: email } })
 
         if (user && user.password === password) {
+          user.password = null
           return res.json({ user: user, role: 'user' })
         } else {
           return res.json({ error: 'User not found' })
@@ -38,6 +39,7 @@ module.exports = {
       }
 
       const user = await User.create({ name, email, password, login })
+      user.password = null
       return res.json({ user: user, role: 'user' })
     } catch (error) {
       return res.json({ error: error })
