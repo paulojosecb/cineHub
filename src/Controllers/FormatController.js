@@ -2,8 +2,12 @@ const Format = require('../Models/Format')
 
 module.exports = {
   async index (req, res) {
-    const formats = await Format.findAll()
-    return res.json(formats)
+    try {
+      const formats = await Format.findAll()
+      return res.json(formats)
+    } catch (error) {
+      return res.json(error)
+    }
   },
 
   async create (req, res) {
