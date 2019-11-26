@@ -4,7 +4,7 @@ const User = require('../Models/User')
 
 module.exports = {
   async index (req, res) {
-    const { id } = req.params
+    const { id, serie_id } = req.params
 
     if (!id) {
       return res.json({ error: 'Bad formatted request' })
@@ -14,8 +14,13 @@ module.exports = {
       if (!user) {
         return res.status(400).json({ error: 'User Not found ' })
       } else {
-        const series = await Serie.findAll({ where: { user_id: id } })
-        return res.json(series)
+        if (serie_id) {
+          const serie = await Serie.findByPk(serie_id)
+          return res.json(serie)
+        } else {
+          const series = await Serie.findAll({ where: { user_id: id } })
+          return res.json(series)
+        }
       }
     }
   },
@@ -33,16 +38,17 @@ module.exports = {
     if (!user) {
       return res.status(400).json({ error: 'User not found' })
     } else {
-      const serie = await Serie.create({ title, photo, id, user_id: id, format_id: format, category_id: category })
+      console.log(req.body)
+      const serie = await Serie.create({ title, photo, user_id: id, format_id: format, category_id: category })
       return res.json(serie)
     }
   },
 
   async update (req, res) {
-    const { serie_id } = req.params
-    const { title, photo, owner, format, category } = req.body
+    const { serie_id, id } = req.params
+    const { title, photo, format, category } = req.body
 
-    if (!title || !photo || !owner || !format || !category) {
+    if (!title || !photo || !format || !category) {
       return res.json({ error: 'Bad formatted Request' })
     }
 
@@ -50,7 +56,7 @@ module.exports = {
       if (!serie_id) {
         return res.json({ error: 'Bad Formatted request' })
       } else {
-        const serie = await Serie.update({ title, photo, user_id: owner, format_id: format, category_id: category }, { returning: false, where: { id: serie_id } })
+        const serie = await Serie.update({ title, photo, user_id: id, format_id: format, category_id: category }, { returning: false, where: { id: serie_id } })
         return res.json(serie)
       }
     } catch (error) {

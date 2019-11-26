@@ -27,6 +27,7 @@ module.exports = {
         return res.json({ error: 'Bad Formatted request' })
       } else {
         const user = await User.update({ name, email, password, login }, { returning: false, where: { id: id } })
+        user.password = null
         return res.json(user)
       }
     } catch (error) {

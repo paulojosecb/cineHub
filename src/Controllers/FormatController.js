@@ -3,8 +3,14 @@ const Format = require('../Models/Format')
 module.exports = {
   async index (req, res) {
     try {
-      const formats = await Format.findAll()
-      return res.json(formats)
+      const { id } = req.params
+      if (id) {
+        const format = await Format.findByPk(id)
+        return res.json(format)
+      } else {
+        const formats = await Format.findAll()
+        return res.json(formats)
+      }
     } catch (error) {
       return res.json(error)
     }
@@ -13,12 +19,16 @@ module.exports = {
   async create (req, res) {
     const { description } = req.body
 
-    if (!description) {
-      return res.json({ error: 'Bad formatted Request' })
-    }
+    try {
+      if (!description) {
+        return res.json({ error: 'Bad formatted Request' })
+      }
 
-    const format = await Format.create({ description })
-    return res.json(format)
+      const format = await Format.create({ description })
+      return res.json(format)
+    } catch (error) {
+      return res.json(error)
+    }
   },
 
   async update (req, res) {

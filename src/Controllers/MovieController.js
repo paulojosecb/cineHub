@@ -4,7 +4,7 @@ const User = require('../Models/User')
 
 module.exports = {
   async index (req, res) {
-    const { id } = req.params
+    const { id, movie_id } = req.params
 
     if (!id) {
       return res.json({ error: 'Bad formatted request' })
@@ -14,8 +14,13 @@ module.exports = {
       if (!user) {
         return res.status(400).json({ error: 'User Not found ' })
       } else {
-        const movies = await Movie.findAll({ where: { user_id: id } })
-        return res.json(movies)
+        if (movie_id) {
+          const movie = await Movie.findAll({ where: { id: movie_id } })
+          return res.json(movie)
+        } else {
+          const movies = await Movie.findAll({ where: { user_id: id } })
+          return res.json(movies)
+        }
       }
     }
   },
@@ -34,6 +39,7 @@ module.exports = {
       return res.status(400).json({ error: 'User not found' })
     } else {
       const movie = await Movie.create({ title, duration, year, photo, user_id: id, format_id: format, category_id: category })
+      console.log(movie)
       return res.json(movie)
     }
   },
@@ -60,7 +66,7 @@ module.exports = {
 
   async delete (req, res) {
     const { movie_id } = req.params
-
+    console.log(movie_id)
     try {
       const movie = await Movie.destroy({ where: { id: movie_id } })
       return res.json(movie)

@@ -2,17 +2,31 @@ const Category = require('../Models/Category')
 
 module.exports = {
   async index (req, res) {
-    const users = await Category.findAll()
-    return res.json(users)
+    try {
+      const { id } = req.params
+      if (id) {
+        const category = await Category.findByPk(id)
+        return res.json(category)
+      } else {
+        const categories = await Category.findAll()
+        return res.json(categories)
+      }
+    } catch (error) {
+      return res.json(error)
+    }
   },
 
   async create (req, res) {
     const { description } = req.body
-    if (!description) {
-      return res.json({ error: 'Bad formatted Request' })
+    try {
+      if (!description) {
+        return res.json({ error: 'Bad formatted Request' })
+      }
+      const user = await Category.create({ description })
+      return res.json(user)
+    } catch (error) {
+      return res.json(error)
     }
-    const user = await Category.create({ description })
-    return res.json(user)
   },
 
   async update (req, res) {
